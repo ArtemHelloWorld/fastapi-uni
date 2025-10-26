@@ -6,7 +6,8 @@ from datetime import datetime
 app = FastAPI(
     title="ToDo лист API",
     description="API для управления задачами с использованием матрицы Эйзенхауэра",
-    version="1.0.0"
+    version="1.0.0",
+    contact={"name": "Артём"}
 )
 
 # Временное хранилище (позже будет заменено на PostgreSQL)
@@ -52,3 +53,13 @@ tasks_db: List[Dict[str, Any]] = [
         "created_at": datetime.now()
     },
 ]
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Привет, студент!",
+        "api_title": app.title,
+        "api_description": app.description,
+        "api_version": app.version,
+        "api_author": app.contact.get("name")
+    }

@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from database import init_db, get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,6 +25,15 @@ app = FastAPI(
     version="3.0.0",
     contact={"name": "Артём"},
     lifespan=lifespan  # Подключаем lifespan
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(tasks.router, prefix="/api/v3")  # подключение роутера к приложению

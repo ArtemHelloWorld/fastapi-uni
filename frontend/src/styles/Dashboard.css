@@ -102,6 +102,13 @@
   margin: 16px auto;
   padding: 0 20px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.filter-tabs-left {
+  display: flex;
   gap: 10px;
 }
 

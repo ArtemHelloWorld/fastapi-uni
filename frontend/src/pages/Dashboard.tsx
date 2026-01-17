@@ -104,10 +104,7 @@ export const Dashboard: React.FC = () => {
           </div>
           <div className="header-right">
             <button className="btn-stats" onClick={() => navigate('/stats')}>
-              📊 Статистика
-            </button>
-            <button className="btn-create" onClick={handleCreateTask}>
-              + Новая задача
+              Статистика
             </button>
             <button className="btn-logout" onClick={logout}>
               Выход
@@ -117,23 +114,28 @@ export const Dashboard: React.FC = () => {
       </header>
 
       <div className="filter-tabs">
-        <button
-          className={`filter-tab ${filter === 'all' ? 'active' : ''}`}
-          onClick={() => setFilter('all')}
-        >
-          Все задачи
-        </button>
-        <button
-          className={`filter-tab ${filter === 'pending' ? 'active' : ''}`}
-          onClick={() => setFilter('pending')}
-        >
-          В процессе
-        </button>
-        <button
-          className={`filter-tab ${filter === 'completed' ? 'active' : ''}`}
-          onClick={() => setFilter('completed')}
-        >
-          Завершенные
+        <div className="filter-tabs-left">
+          <button
+            className={`filter-tab ${filter === 'all' ? 'active' : ''}`}
+            onClick={() => setFilter('all')}
+          >
+            Все задачи
+          </button>
+          <button
+            className={`filter-tab ${filter === 'pending' ? 'active' : ''}`}
+            onClick={() => setFilter('pending')}
+          >
+            В процессе
+          </button>
+          <button
+            className={`filter-tab ${filter === 'completed' ? 'active' : ''}`}
+            onClick={() => setFilter('completed')}
+          >
+            Завершенные
+          </button>
+        </div>
+        <button className="btn-create" onClick={handleCreateTask}>
+          + Новая задача
         </button>
       </div>
 

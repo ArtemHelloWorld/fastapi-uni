@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { tasksAPI, statsAPI } from '../services/api';
-import type { Task, Stats } from '../types';
+import { tasksAPI } from '../services/api';
+import type { Task } from '../types';
 import { TaskCard } from '../components/TaskCard';
 import { TaskModal } from '../components/TaskModal';
-import { StatsPanel } from '../components/StatsPanel';
 import '../styles/Dashboard.css';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -23,12 +23,10 @@ export const Dashboard: React.FC = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [tasksData, statsData] = await Promise.all([
-        filter === 'all' ? tasksAPI.getAll() : tasksAPI.getByStatus(filter),
-        statsAPI.getStats(),
-      ]);
+      const tasksData = filter === 'all' 
+        ? await tasksAPI.getAll() 
+        : await tasksAPI.getByStatus(filter);
       setTasks(tasksData);
-      setStats(statsData);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
@@ -102,9 +100,12 @@ export const Dashboard: React.FC = () => {
         <div className="header-content">
           <div className="header-left">
             <h1>Менеджер задач</h1>
-            <p className="user-info">Добро пожаловать, {user?.nickname}!</p>
+            <p className="user-info">{user?.nickname}</p>
           </div>
           <div className="header-right">
+            <button className="btn-stats" onClick={() => navigate('/stats')}>
+              📊 Статистика
+            </button>
             <button className="btn-create" onClick={handleCreateTask}>
               + Новая задача
             </button>
@@ -114,8 +115,6 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </header>
-
-      {stats && <StatsPanel stats={stats} />}
 
       <div className="filter-tabs">
         <button
